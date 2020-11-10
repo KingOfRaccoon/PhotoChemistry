@@ -2,21 +2,23 @@ data class Molecule(
     val name: String,
     val ox: Oxidation,
 )
-enum class Element(val molecale: Molecule) {
+
+enum class Element(val molecule: Molecule) {
     H(Molecule("hydrogenium", Oxidation.I1)),
-    O(Molecule("oxygen", Oxidation._I2)),
+    O(Molecule("oxygen", Oxidation._I2))
 }
+
 class Compound(){
     var elements = mutableMapOf<Element, Int>()
 
     operator fun plus(other: Compound): Compound {
         var mySum = 0
         for (i in 0..elements.size-1) {
-            mySum += this.elements.keys.toList()[i].molecale.ox.k * this.elements.values.toList()[i]
+            mySum += this.elements.keys.toList()[i].molecule.ox.k * this.elements.values.toList()[i]
         }
         var otherSum = 0
         for (i in 0..elements.size-1) {
-            otherSum += other.elements.keys.toList()[i].molecale.ox.k * other.elements.values.toList()[i]
+            otherSum += other.elements.keys.toList()[i].molecule.ox.k * other.elements.values.toList()[i]
         }
 
         println(mySum)
@@ -28,7 +30,7 @@ class Compound(){
             ret.elements.putAll(other.elements)
             return ret
         }
-        if (mySum + otherSum != 0 ){
+        else{
             
         }
         return Compound()
@@ -37,8 +39,20 @@ fun show(){
     println(this.elements)
 
 }
+    fun searchElement(element: Element): Element? {
+        if(elements.containsKey(element)){
+           return element
+        }
+        else
+//        this.elements.keys.toMutableList().forEach {
+//            if (it.name == element.name){
+//                return element
+//            }
+//        }
+        return null
+    }
 }
-
+//степени окисления
 enum class Oxidation(val k:Int){
     I0(0),
     I1(1),

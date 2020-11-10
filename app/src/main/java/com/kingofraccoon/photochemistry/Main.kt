@@ -11,4 +11,10 @@ fun main(){
     }
     var sum = h2 + o
     sum.show()
+    var o1 = Element.O
+    println(sum.searchElement(o1))
+    println(o1.molecule.ox)
+//    2H2 + 02 = 2H2O
+//    H2 + O2 = H2O
+//
 }
