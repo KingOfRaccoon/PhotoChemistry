@@ -1,14 +1,18 @@
 data class Molecule(
     val name: String,
     val ox: Oxidation,
+    val symbol: String
 )
 
-enum class Element(val molecule: Molecule) {
-    H(Molecule("hydrogenium", Oxidation.I1)),
-    O(Molecule("oxygen", Oxidation._I2))
+//enum class StartElement(val molecule: Molecule){
+//    H(Molecule())
+//}
+enum class Element(var molecule: Molecule) {
+    H(Molecule("hydrogenium", Oxidation.I1, "H")),
+    O(Molecule("oxygen", Oxidation._I2, "O"))
 }
 
-class Compound(){
+class Compound{
     var elements = mutableMapOf<Element, Int>()
 
     operator fun plus(other: Compound): Compound {
@@ -35,10 +39,24 @@ class Compound(){
         }
         return Compound()
     }
-fun show(){
-    println(this.elements)
+    fun show(){
+        println(this.elements)
+    }
+//    fun getFormule(){
+//        var string = ""
+//        elements.fo
+//    }
 
-}
+    override fun toString(): String {
+        var string = ""
+        elements.forEach {
+            string += it.key.molecule.symbol
+            if (it.value != 1)
+                string += it.value.toString()
+        }
+        return string
+    }
+
     fun searchElement(element: Element): Element? {
         if(elements.containsKey(element)){
            return element
@@ -52,6 +70,39 @@ fun show(){
         return null
     }
 }
+class Formula(var reagents: MutableList<Compound>, var products: MutableList<Compound>) {
+
+    override fun toString(): String {
+        var string = ""
+        reagents.forEach {
+            string += it.toString()
+            if (it != reagents.last())
+                string += " + "
+            else
+                string += " = "
+        }
+        products.forEach {
+            string += it.toString()
+            if (it != products.last())
+                string = " + "
+        }
+        return string
+    }
+
+    fun getElements(){
+        val map = mutableMapOf<Element, Int>()
+        reagents.forEach {
+            map.putAll(it.elements)
+        }
+        println(map)
+        val prodMap = mutableMapOf<Element, Int>()
+        products.forEach {
+            prodMap.putAll(it.elements)
+        }
+        println(prodMap)
+    }
+}
+
 //степени окисления
 enum class Oxidation(val k:Int){
     I0(0),

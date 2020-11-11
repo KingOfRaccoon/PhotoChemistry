@@ -1,20 +1,29 @@
 fun main(){
-    var h2 = Compound().apply {
+    val h2 = Compound().apply {
         elements = mutableMapOf(
             Element.H to 2
         )
     }
-    var o = Compound().apply {
+    val o = Compound().apply {
         elements = mutableMapOf(
             Element.O to 1
         )
     }
-    var sum = h2 + o
+    val sum = h2 + o
     sum.show()
-    var o1 = Element.O
-    println(sum.searchElement(o1))
-    println(o1.molecule.ox)
+    println(sum.toString())
+    val o1 = Element.O
+    val formula = Formula(
+            mutableListOf(h2, o),
+            mutableListOf(sum)
+    )
+    println(formula.toString())
+    formula.getElements()
+
+//    println(sum.searchElement(o1))
+//    println(h2)
 //    2H2 + 02 = 2H2O
 //    H2 + O2 = H2O
-//
+//    2H0 - 2H+1 = 2e
+//    2O0 - 20-2 = -4e
 }

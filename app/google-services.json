@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "530820880442",
+    "firebase_url": "https://dklsfds-b561c.firebaseio.com",
+    "project_id": "dklsfds-b561c",
+    "storage_bucket": "dklsfds-b561c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:530820880442:android:1ad731b39926a86210fd03",
+        "android_client_info": {
+          "package_name": "com.kingofraccoon.photochemistry"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "530820880442-bv9gmfe7ih4qfsrn89erv34uehfsab5i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAaD29wlbRn0fTMDduebch_EehAP7kriFQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "530820880442-bv9gmfe7ih4qfsrn89erv34uehfsab5i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
