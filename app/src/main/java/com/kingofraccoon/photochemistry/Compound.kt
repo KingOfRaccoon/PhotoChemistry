@@ -1,16 +1,4 @@
-data class Molecule(
-    val name: String,
-    val ox: Oxidation,
-    val symbol: String
-)
-
-//enum class StartElement(val molecule: Molecule){
-//    H(Molecule())
-//}
-enum class Element(var molecule: Molecule) {
-    H(Molecule("hydrogenium", Oxidation.I1, "H")),
-    O(Molecule("oxygen", Oxidation._I2, "O"))
-}
+package com.kingofraccoon.photochemistry
 
 class Compound{
     var elements = mutableMapOf<Element, Int>()
@@ -35,7 +23,7 @@ class Compound{
             return ret
         }
         else{
-            
+
         }
         return Compound()
     }
@@ -57,9 +45,9 @@ class Compound{
         return string
     }
 
-    fun searchElement(element: Element): Element? {
+    fun searchElement(element: Element): Pair<Compound, Int>? {
         if(elements.containsKey(element)){
-           return element
+           return this to elements[element]!!
         }
         else
 //        this.elements.keys.toMutableList().forEach {
@@ -69,57 +57,4 @@ class Compound{
 //        }
         return null
     }
-}
-class Formula(var reagents: MutableList<Compound>, var products: MutableList<Compound>) {
-
-    override fun toString(): String {
-        var string = ""
-        reagents.forEach {
-            string += it.toString()
-            if (it != reagents.last())
-                string += " + "
-            else
-                string += " = "
-        }
-        products.forEach {
-            string += it.toString()
-            if (it != products.last())
-                string = " + "
-        }
-        return string
-    }
-
-    fun getElements(){
-        val map = mutableMapOf<Element, Int>()
-        reagents.forEach {
-            map.putAll(it.elements)
-        }
-        println(map)
-        val prodMap = mutableMapOf<Element, Int>()
-        products.forEach {
-            prodMap.putAll(it.elements)
-        }
-        println(prodMap)
-    }
-}
-
-//степени окисления
-enum class Oxidation(val k:Int){
-    I0(0),
-    I1(1),
-    _I1(-1),
-    I2(2),
-    _I2(-2),
-    I3(3),
-    _I3(-3),
-    I4(4),
-    _I4(-4),
-    I5(5),
-    _I5(-5),
-    I6(6),
-    _I6(-6),
-    I7(7),
-    _I7(-7),
-    I8(8),
-    _I8(-8)
 }

@@ -1,7 +1,6 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-    id 'com.google.gms.google-services'
 }
 
 android {
@@ -10,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId "com.kingofraccoon.photochemistry"
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -40,13 +39,11 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-//    implementation 'com.google.firebase:firebase-ml-vision:24.1.0'
-//    implementation 'androidx.camera:camera-camera2:1.0.0-beta11'
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-//    implementation 'com.google.android.gms:play-services-vision:20.1.2'
-//    implementation platform('com.google.firebase:firebase-bom:26.0.0')
-//    implementation 'com.google.firebase:firebase-core:18.0.0'
+    implementation 'com.huawei.hms:ml-computer-vision-ocr:2.0.1.300'
+    implementation 'com.huawei.hms:ml-computer-vision-ocr-latin-model:2.0.1.300'
+    implementation 'com.huawei.hms:ml-computer-vision-ocr-jk-model:2.0.1.300'
+    implementation 'com.huawei.hms:ml-computer-vision-ocr-cn-model:2.0.1.300'
 }
-//apply plugin: 'com.google.gms.google-services'
