@@ -60,6 +60,10 @@ class ConvertToFormula(var string: String){
         val list = mutableMapOf<String, Int>()
         var str = ""
         string.forEach {
+            if (it != string[0] && it.isUpperCase()){
+                list.put(str, 1)
+                str = ""
+            }
             if (arrayNumbers.contains(it.toString())){
                 list.put(str ,it.toString().toInt())
                 str = ""
@@ -93,10 +97,15 @@ class ConvertToFormula(var string: String){
         }
     }
     fun getElement(pair: Pair<String, Int>): Pair<Element, Int>? {
-        when(pair.first){
+        when(pair.first.trim()){
             Element.H.molecule.symbol -> return Element.H to pair.second
-            "Н" -> return Element.H to pair.second
             Element.O.molecule.symbol -> return Element.O to pair.second
+            Element.Al.molecule.symbol -> return Element.Al to pair.second
+            Element.Zn.molecule.symbol -> return Element.Zn to pair.second
+            Element.Cl.molecule.symbol -> return Element.Cl to pair.second
+            Element.Mg.molecule.symbol -> return Element.Mg to pair.second
+            Element.Cu.molecule.symbol -> return Element.Cu to pair.second
+            Element.Na.molecule.symbol -> return Element.Na to pair.second
             else -> return null
         }
     }

@@ -4,46 +4,73 @@ import NOK
 import minusMap
 import plusMap
 
-class CompoundGenerator(var reagents: MutableMap<Compound, Int>, var answer: Pair<Compound, Int>) {
-    constructor(formula: Formula): this(formula.reagents, formula.products.toList().first()){
-//        reagents = formula.reagents
-//        answer = formula.products.toList().first()
-    }
+class CompoundGenerator(var reagents: MutableMap<Compound, Int>, var product: Pair<Compound, Int>) {
+    constructor(formula: Formula) : this(formula.reagents, formula.products.toList().first())
+
     fun check(): String {
-        var reagentsMap = getElementsReagents()
-        var answerMap = getElementsAnswers()
+        var quantityElementsInReagents = getElementsReagents()
+        var quantityElementsInProduct = getElementsProducts()
         var checkMap: MutableMap<Element, Int>
-        var temp = mutableMapOf<Compound, Int>()
-        while (reagentsMap != answerMap) {
-            checkMap = minusMap(reagentsMap, answerMap)
+        val needToBalance = mutableListOf<MutableMap<Compound, Int>>()
+        while (quantityElementsInReagents != quantityElementsInProduct) {
+            checkMap = minusMap(getElementsReagents(), quantityElementsInProduct)
             checkMap.forEach {
-                temp = find(it.toPair())
+                needToBalance.add(findCompoundToBalance(it.toPair()))
             }
-            reagents.plusAssign(temp.toList().first().first to NOK(getKey(reagents, temp.toList().first().first)?.searchElement(checkMap.toList().first().first)?.second!!, temp.toList().last().second) / temp.toList().first().second)
-            answer = multiply(answer, NOK(answer.second, temp.toList().first().second) / answer.second)
-            reagentsMap = getElementsReagents()
-            answerMap = getElementsAnswers()
-            println(reagentsMap)
-            println(answerMap)
+            needToBalance.forEach {
+                val firstReagent = it.toList().first()
+                val compoundToBalance = if (reagents.containsKey(firstReagent.first)) firstReagent.first else null
+                val quantityInReagents = compoundToBalance?.getQuantityElements(checkMap.toList().first().first)!!
+                val quantityInProduct = it.toList().last().second
+                val currentQuantityInReagent = it.toList().first().second
+                val quantityFirstReagent = NOK(quantityInReagents, quantityInProduct) / currentQuantityInReagent
+                reagents.plusAssign(multiply(firstReagent.first to reagents[firstReagent.first]!!, quantityFirstReagent))
+                val currentQuantityInProduct = it.toList().first().second
+                product = multiply(product, NOK(product.second, currentQuantityInProduct) / product.second)
+                checkMap.minusAssign(checkMap.keys.first())
+            }
+            quantityElementsInReagents = getElementsReagents()
+            quantityElementsInProduct = getElementsProducts()
+            needToBalance.clear()
         }
-        val formula = Formula(reagents, mutableMapOf(answer))
+        val formula = Formula(reagents, mutableMapOf(product))
         return formula.toString()
     }
 
-    fun find(pair: Pair<Element, Int>): MutableMap<Compound, Int> { // поиск элемента, который надо домножить
+    fun printList(): MutableList<MutableMap<Compound, Int>> {
+        val needToBalance = mutableListOf<MutableMap<Compound, Int>>()
+        minusMap(getElementsReagents(), getElementsProducts()).forEach {
+            needToBalance.add(findCompoundToBalance(it.toPair()))
+        }
+        return needToBalance
+    }
+
+    private fun findCompoundToBalance(pair: Pair<Element, Int>): MutableMap<Compound, Int> { // поиск элемента, который надо домножить
+        val mutableList = mutableMapOf<Compound, Int>()
+        mutableList.putAll(getCompoundReagentsToBalance(pair))
+        mutableList.putAll(getCompoundAnswersToBalance(pair))
+        return mutableList
+    }
+
+    private fun getCompoundReagentsToBalance(pair: Pair<Element, Int>): MutableMap<Compound, Int> {
         val mutableMap = mutableMapOf<Compound, Int>()
         for (it in reagents.keys) {
-            if (it.searchElement(pair.first) != null) {
-                mutableMap.put(it, it.searchElement(pair.first)!!.second)
+            if (it.getQuantityElements(pair.first) != null) {
+                mutableMap.put(it, it.getQuantityElements(pair.first)!! * reagents[it]!!)
                 break
             }
         }
-        if (answer.first.searchElement(pair.first) != null)
-            mutableMap.put(answer.first, answer.first.searchElement(pair.first)!!.second * answer.second)
         return mutableMap
     }
 
-    fun getElementsReagents(): MutableMap<Element, Int> {
+    private fun getCompoundAnswersToBalance(pair: Pair<Element, Int>): MutableMap<Compound, Int> {
+        val mutableMap = mutableMapOf<Compound, Int>()
+        if (product.first.getQuantityElements(pair.first) != null)
+            mutableMap.put(product.first, product.first.getQuantityElements(pair.first)!! * product.second)
+        return mutableMap
+    }
+
+    private fun getElementsReagents(): MutableMap<Element, Int> {
         var map = mutableMapOf<Element, Int>()
         reagents.forEach {
             for (i in 0 until it.value)
@@ -52,20 +79,14 @@ class CompoundGenerator(var reagents: MutableMap<Compound, Int>, var answer: Pai
         return map
     }
 
-    fun getElementsAnswers(): MutableMap<Element, Int> {
+    private fun getElementsProducts(): MutableMap<Element, Int> {
         var map = mutableMapOf<Element, Int>()
-        for (i in 0 until answer.second)
-            map = plusMap(map, answer.first.elements)
+        for (i in 0 until product.second)
+            map = plusMap(map, product.first.elements)
         return map
     }
-    fun getKey(mutableMap: MutableMap<Compound, Int>, compound: Compound): Compound? {
-        mutableMap.forEach {
-            if (it.key == compound)
-                return it.key
-        }
-        return null
-    }
-    fun multiply(pair: Pair<Compound, Int>, int: Int): Pair<Compound, Int>{
+
+    private fun multiply(pair: Pair<Compound, Int>, int: Int): Pair<Compound, Int> {
         return pair.first to pair.second * int
     }
 }

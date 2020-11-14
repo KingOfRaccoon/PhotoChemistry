@@ -8,14 +8,13 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.huawei.hms.mlsdk.MLAnalyzerFactory
 import com.huawei.hms.mlsdk.common.MLFrame
-import com.huawei.hms.mlsdk.text.MLTextAnalyzer
 import com.kingofraccoon.photochemistry.tools.ConvertToFormula
+import com.theartofdev.edmodo.cropper.CropImage
 
 class MainActivity : AppCompatActivity() {
     lateinit var textView: TextView
@@ -25,8 +24,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         textView = findViewById(R.id.textFormula)
         formulaTextView = findViewById(R.id.formula)
-        val fab : FloatingActionButton = findViewById(R.id.photo)
-        val button : Button = findViewById(R.id.check)
+        val fab: FloatingActionButton = findViewById(R.id.photo)
+        val button: Button = findViewById(R.id.check)
         if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
             requestPermissions(arrayOf(Manifest.permission.CAMERA), 101)
         fab.setOnClickListener {
@@ -45,6 +44,7 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         val bundle = data?.extras
+//        val bitmap = CropImage.get
         val bitmap = bundle?.get("data") as Bitmap
         val analyzer = MLAnalyzerFactory.getInstance().localTextAnalyzer
         val frame = MLFrame.fromBitmap(bitmap)
@@ -56,10 +56,11 @@ class MainActivity : AppCompatActivity() {
             textView.text = it.message
         }
     }
-    private fun help(string: String):String{
+
+    private fun help(string: String): String {
         var str = ""
-        for (i in string){
-            when(i){
+        for (i in string) {
+            when (i) {
                 '-' -> str += "="
                 '0' -> str += "O"
                 else -> str += i
@@ -67,7 +68,8 @@ class MainActivity : AppCompatActivity() {
         }
         return str
     }
-    private fun deleteSpace(string: String): String{
+
+    private fun deleteSpace(string: String): String {
         var str = ""
         string.forEach {
             if (it.toString() != " ")
@@ -76,7 +78,7 @@ class MainActivity : AppCompatActivity() {
         return str
     }
 
-    private fun setFragment(fragment: Fragment){
+    private fun setFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
                 .add(R.id.frame, fragment)
                 .addToBackStack(null)

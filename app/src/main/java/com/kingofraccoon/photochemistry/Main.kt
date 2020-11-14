@@ -45,18 +45,18 @@ fun main(){
 //    formula.reagents.forEach {
 //        muMap.put(it, 1)
 //    }
-    val compoundGenerator = CompoundGenerator(formula.reagents, h2 + o1 to 1)
+//    val compoundGenerator = CompoundGenerator(formula.reagents, h2 + o1 to 1)
 //    println(compoundGenerator.getElementsReagents())
 //    println(compoundGenerator.getElementsAnswers())
 //    val v = minusMap(compoundGenerator.getElementsReagents(), compoundGenerator.getElementsAnswers())
 //    v.forEach {
 //        println(compoundGenerator.find(it.key to it.value))
 //    }
-    println(compoundGenerator.reagents)
-    println(compoundGenerator.answer)
-    compoundGenerator.check()
-    println(compoundGenerator.reagents)
-    println(compoundGenerator.answer)
+//    println(compoundGenerator.reagents)
+//    println(compoundGenerator.product)
+//    compoundGenerator.check()
+//    println(compoundGenerator.reagents)
+//    println(compoundGenerator.product)
 
 //    println(sum.searchElement(o1))
 //    println(h2)
@@ -64,11 +64,25 @@ fun main(){
 //    H2 + O2 = H2O
 //    2H0 - 2H+1 = 2e
 //    2O0 - 20-2 = -4e
-    val convertToFormula = ConvertToFormula("H2 + O2 = H2O")
-    println(convertToFormula.getElement("H" to 2))
-    println(convertToFormula.getCompound("H2O"))
-    println(convertToFormula.getFormula().toString())
-    CompoundGenerator(convertToFormula.getFormula()).check()
+    val convertToFormula = ConvertToFormula("Cu + O2 = CuO")
+    val cTF = ConvertToFormula("Al + O2 = Al2O3")
+    val ctf = ConvertToFormula("Na2O + H2O = NaOH")
+    val c = ConvertToFormula("Zn + Cl = ZnCl2")
+    val c1 = ConvertToFormula("Zn + O2 = ZnO")
+    val c2 = ConvertToFormula("Mg + O2 = MgO")
+    val c3 = ConvertToFormula("Cu + O2 = CuO")
+    println(CompoundGenerator(convertToFormula.getFormula()).check())
+    println(CompoundGenerator(cTF.getFormula()).check())
+    println(CompoundGenerator(ctf.getFormula()).check())
+    println(CompoundGenerator(c.getFormula()).check())
+    println(CompoundGenerator(c1.getFormula()).check())
+    println(CompoundGenerator(c2.getFormula()).check())
+    println(CompoundGenerator(c3.getFormula()).check())
+//    println(convertToFormula.getElement("H" to 2))
+//    println(convertToFormula.getCompound("H2O"))
+//    println(convertToFormula.getFormula().toString())
+//    println("Al" == Element.Al.molecule.symbol)
+
 }
 
 fun minusMap(startMutableMap: MutableMap<Element, Int>, mutableMap: MutableMap<Element, Int>): MutableMap<Element, Int> {
