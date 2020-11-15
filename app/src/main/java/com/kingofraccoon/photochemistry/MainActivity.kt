@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.Button
@@ -19,6 +20,7 @@ import com.theartofdev.edmodo.cropper.CropImage
 class MainActivity : AppCompatActivity() {
     lateinit var textView: TextView
     lateinit var formulaTextView: TextView
+    lateinit var imageUri : Uri
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -29,8 +31,9 @@ class MainActivity : AppCompatActivity() {
         if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
             requestPermissions(arrayOf(Manifest.permission.CAMERA), 101)
         fab.setOnClickListener {
-            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            startActivityForResult(intent, 101)
+//            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+//            startActivityForResult(intent, 101)
+            CropImage.activity().start(this)
         }
         button.setOnClickListener {
 //            formulaTextView.text = deleteSpace(help(textView.text.toString()))
@@ -43,14 +46,17 @@ class MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        val bundle = data?.extras
+//        val bundle = data?.extras
 //        val bitmap = CropImage.get
-        val bitmap = bundle?.get("data") as Bitmap
+//        val bitmap = bundle?.get("data") as Bitmap
+        val result = CropImage.getActivityResult(data)
+        imageUri = result.uri
+        val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
         val analyzer = MLAnalyzerFactory.getInstance().localTextAnalyzer
         val frame = MLFrame.fromBitmap(bitmap)
         val task = analyzer.asyncAnalyseFrame(frame)
         task.addOnSuccessListener {
-            textView.text = it.stringValue
+            textView.text = deleteSpace(help(it.stringValue))
         }
         task.addOnFailureListener {
             textView.text = it.message
@@ -63,6 +69,9 @@ class MainActivity : AppCompatActivity() {
             when (i) {
                 '-' -> str += "="
                 '0' -> str += "O"
+                ',' -> str += "2"
+                'I' -> str += "l"
+
                 else -> str += i
             }
         }

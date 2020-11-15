@@ -82,6 +82,7 @@ fun main(){
 //    println(convertToFormula.getCompound("H2O"))
 //    println(convertToFormula.getFormula().toString())
 //    println("Al" == Element.Al.molecule.symbol)
+    println(c3.getCompound("ZnCl2"))
 
 }
 
