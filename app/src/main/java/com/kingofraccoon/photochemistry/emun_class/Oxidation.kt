@@ -1,6 +1,6 @@
-package com.kingofraccoon.photochemistry
+package com.kingofraccoon.photochemistry.emun_class
 
-//степени окисления
+//класс степеней окисления
 enum class Oxidation(val k:Int){
     I0(0),
     I1(1),

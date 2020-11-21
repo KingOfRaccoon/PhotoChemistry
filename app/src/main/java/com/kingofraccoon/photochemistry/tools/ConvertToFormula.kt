@@ -1,13 +1,12 @@
 package com.kingofraccoon.photochemistry.tools
 
 import com.kingofraccoon.photochemistry.Compound
-import com.kingofraccoon.photochemistry.Element
+import com.kingofraccoon.photochemistry.emun_class.Element
 import com.kingofraccoon.photochemistry.Formula
 
-// "H2+O2=H2O"
-// Н2О ->
+// класс для превращения строки в формулу
 class ConvertToFormula(var string: String) {
-    fun getFormula(): Formula {
+    fun getFormula(): Formula { // возвращает формулу
         val array = string.split("=")
         val listReagents = array.first().split("+")
         val listAnswer = array.last().split("+")
@@ -46,38 +45,43 @@ class ConvertToFormula(var string: String) {
         return Formula(mutableMapCompound, answersMapCompound)
     }
 
-    fun getCompound(string: String): MutableMap<String, Int> {
+    fun getCompound(string: String): MutableMap<String, Int> { // возвращет моллекулы в виде строк
         val arrayNumbers = arrayOf("2", "3", "4", "5", "6", "7", "8", "9")
         val list = mutableMapOf<String, Int>()
+        val stringList = mutableListOf<Pair<Char, Int>>()
+        for (i in string.indices){
+            stringList.add(string[i] to i)
+        }
         var str = ""
-        string.forEach {
-            if (it != string[0] && it.isUpperCase()) {
-                list.put(str, 1)
+        stringList.forEach {
+            if (it.second != 0 && it.first.isUpperCase()) {
+                list.put(str.trim(), 1)
                 str = ""
             }
-            if (arrayNumbers.contains(it.toString())) {
-                list.put(str, it.toString().toInt())
+            if (arrayNumbers.contains(it.first.toString())) {
+                list.put(str.trim(), it.first.toString().toInt())
                 str = ""
             } else {
-                str += it
+                str += it.first.toString()
             }
         }
         if (str.isNotBlank())
-            list.put(str, 1)
+            list.put(str.trim(), 1)
         return list
     }
 
-    fun getElement(pair: Pair<String, Int>): Pair<Element, Int>? {
-        when (pair.first.trim()) {
-            Element.H.molecule.symbol -> return Element.H to pair.second
-            Element.O.molecule.symbol -> return Element.O to pair.second
-            Element.Al.molecule.symbol -> return Element.Al to pair.second
-            Element.Zn.molecule.symbol -> return Element.Zn to pair.second
-            Element.Cl.molecule.symbol -> return Element.Cl to pair.second
-            Element.Mg.molecule.symbol -> return Element.Mg to pair.second
-            Element.Cu.molecule.symbol -> return Element.Cu to pair.second
-            Element.Na.molecule.symbol -> return Element.Na to pair.second
-            else -> return null
+    fun getElement(pair: Pair<String, Int>): Pair<Element, Int>? { // возвращет элемент по названию
+        return when (pair.first.trim()) {
+            Element.H.molecule.symbol -> Element.H to pair.second
+            Element.O.molecule.symbol -> Element.O to pair.second
+            Element.Al.molecule.symbol -> Element.Al to pair.second
+            Element.Zn.molecule.symbol -> Element.Zn to pair.second
+            Element.Cl.molecule.symbol -> Element.Cl to pair.second
+            Element.Mg.molecule.symbol -> Element.Mg to pair.second
+            Element.Cu.molecule.symbol -> Element.Cu to pair.second
+            Element.Na.molecule.symbol -> Element.Na to pair.second
+            Element.Ca.molecule.symbol -> Element.Ca to pair.second
+            else -> null
         }
     }
 }

@@ -1,5 +1,7 @@
 package com.kingofraccoon.photochemistry
 
+import com.kingofraccoon.photochemistry.emun_class.Element
+// класс моллекулы
 class Compound {
     var elements = mutableMapOf<Element, Int>()
 
@@ -31,7 +33,7 @@ class Compound {
         println(this.elements)
     }
 
-    override fun toString(): String {
+    override fun toString(): String { // вывод названия молекулы
         var string = ""
         elements.forEach {
             string += it.key.molecule.symbol
@@ -41,15 +43,10 @@ class Compound {
         return string
     }
 
-    fun getQuantityElements(element: Element): Int? {
-        if (elements.containsKey(element)) {
+    fun getQuantityElements(element: Element): Int? { // возвращение количества в данной моллекуле данных элементов
+        if (elements.containsKey(element))
             return elements[element]!!
-        } else
-//        this.elements.keys.toMutableList().forEach {
-//            if (it.name == element.name){
-//                return element
-//            }
-//        }
+        else
             return null
     }
 }
